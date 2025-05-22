@@ -455,10 +455,44 @@ background-color: rgb(50, 50, 50);
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>modify</sender>
+   <signal>clicked()</signal>
+   <receiver>XView_ZillClass</receiver>
+   <slot>SetCam()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>100</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-51</x>
+     <y>140</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear</sender>
+   <signal>clicked()</signal>
+   <receiver>XView_ZillClass</receiver>
+   <slot>DelCam()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-63</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>MaxWindow()</slot>
   <slot>NormalWindow()</slot>
   <slot>AddCam()</slot>
+  <slot>SetCam()</slot>
+  <slot>DelCam()</slot>
  </slots>
 </ui>

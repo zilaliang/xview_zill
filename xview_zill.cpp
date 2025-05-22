@@ -11,7 +11,9 @@
 #include<QFormLayout>
 #include<QLineEdit>
 #include<QMessageBox>
+#include<sstream>
 #include"camera_config.h"
+using namespace std;
 #define CAM_CONF_PATH "cams.db"
 #define C(s) QString::fromLocal8Bit(s)
 static QWidget* cam_wids[16] = { 0 };
@@ -133,44 +135,14 @@ void XView_Zill::RefreshCams() {
         ui.cam_list->addItem(item);
     }
 }
-
-XView_Zill::~XView_Zill()
-{
-}
-
-void XView_Zill::MaxWindow()
-{
-    ui.max->setVisible(false);
-    ui.normal->setVisible(true);
-    showMaximized();
-}
-void XView_Zill::NormalWindow()
-{
-    ui.max->setVisible(true);
-    ui.normal->setVisible(false);
-    showNormal();
-}
-void XView_Zill::View1() {
-    View(1);
-}
-void XView_Zill::View4() {
-    View(4);
-}
-void XView_Zill::View9() {
-    View(9);
-}
-void XView_Zill::View16() {
-    View(16);
-}
-//新增摄像机
-void XView_Zill::AddCam() {
-    qDebug() << "hover";
+void XView_Zill::SetCam(int index) {
+    auto c = CameraConfig::Instance();
     QDialog dlg(this);
     dlg.resize(600, 200);
     QFormLayout lay;
     dlg.setLayout(&lay);
     QLineEdit name_edit;
-    lay.addRow(C("名称"),&name_edit);
+    lay.addRow(C("名称"), &name_edit);
 
     QLineEdit url_edit;
     lay.addRow(C("主码流"), &url_edit);
@@ -185,6 +157,18 @@ void XView_Zill::AddCam() {
     save.setText(C("保存"));
     connect(&save, SIGNAL(clicked()), &dlg, SLOT(accept()));
     lay.addRow("", &save);
+
+    //编辑
+    if (index >= 0)
+    {
+        auto cam = c->GetCam(index);
+        name_edit.setText(C(cam.name));
+        url_edit.setText(C(cam.url));
+        sub_url_edit.setText(C(cam.url_sub));
+        save_path_edit.setText(C(cam.save_path));
+
+
+    }
     for (;;)
     {
         if (dlg.exec() == QDialog::Accepted)
@@ -218,7 +202,79 @@ void XView_Zill::AddCam() {
     strcpy_s(data.url, url_edit.text().toLocal8Bit());
     strcpy_s(data.url_sub, sub_url_edit.text().toLocal8Bit());
     strcpy_s(data.save_path, save_path_edit.text().toLocal8Bit());
-    CameraConfig::Instance()->Push(data);//插入数据
-    CameraConfig::Instance()->Save(CAM_CONF_PATH);//保存到文件
+    if (index >= 0)
+    {
+        c->SetCam(index, data);
+    }
+    else
+    {
+        c->Push(data);//插入数据
+    }
+    c->Save(CAM_CONF_PATH);//保存到文件
     RefreshCams();//刷新显示
+}
+XView_Zill::~XView_Zill()
+{
+}
+
+void XView_Zill::MaxWindow()
+{
+    ui.max->setVisible(false);
+    ui.normal->setVisible(true);
+    showMaximized();
+}
+void XView_Zill::NormalWindow()
+{
+    ui.max->setVisible(true);
+    ui.normal->setVisible(false);
+    showNormal();
+}
+void XView_Zill::View1() {
+    View(1);
+}
+void XView_Zill::View4() {
+    View(4);
+}
+void XView_Zill::View9() {
+    View(9);
+}
+void XView_Zill::View16() {
+    View(16);
+}
+//新增摄像机
+void XView_Zill::AddCam() {
+    SetCam(-1);
+}
+
+void XView_Zill::SetCam() {
+    int row = ui.cam_list->currentIndex().row();
+    if (row < 0)
+    {
+        QMessageBox::information(this, "error", C("请选择摄像机"));
+        return;
+    }
+    qDebug() << "dd";
+
+    SetCam(row);
+}
+void XView_Zill::DelCam()
+{
+    int row = ui.cam_list->currentIndex().row();
+    if (row < 0)
+    {
+        QMessageBox::information(this, "error", C("请选择摄像机"));
+        return;
+    }
+    stringstream ss;
+    ss << "请确认是否删除相机" << ui.cam_list->currentItem()->text().toLocal8Bit().constData();
+    ss << "吗?";
+    if (QMessageBox::information(this, "confirm", C(ss.str().c_str()),
+        QMessageBox::Yes, QMessageBox::No
+    ) != QMessageBox::Yes)
+    {
+        return;
+    }
+    CameraConfig::Instance()->DelCam(row);
+    CameraConfig::Instance()->Save(CAM_CONF_PATH);
+    RefreshCams();
 }

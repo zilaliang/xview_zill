@@ -22,7 +22,7 @@ public:
     void View(int count);
     //刷新左侧相机列表
     void RefreshCams();
-
+    void SetCam(int index);
 
     ~XView_Zill();
 
@@ -35,7 +35,8 @@ public slots:
     void View9();
     void View16();
     void AddCam();
-
+    void SetCam();
+    void DelCam();
 
 
 private:
