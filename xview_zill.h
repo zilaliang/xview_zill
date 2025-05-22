@@ -22,8 +22,10 @@ public:
     void View(int count);
     //刷新左侧相机列表
     void RefreshCams();
+    //新增修改相机
     void SetCam(int index);
 
+    void timerEvent(QTimerEvent* ev)override;
     ~XView_Zill();
 
 public slots:

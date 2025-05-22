@@ -43,6 +43,9 @@
     <ClCompile Include="camera_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="camerawidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -64,5 +67,10 @@
     <Image Include="img\Z .png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="camerawidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

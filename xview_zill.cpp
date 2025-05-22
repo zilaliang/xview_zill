@@ -13,10 +13,12 @@
 #include<QMessageBox>
 #include<sstream>
 #include"camera_config.h"
+#include "camerawidget.h"
+
 using namespace std;
 #define CAM_CONF_PATH "cams.db"
 #define C(s) QString::fromLocal8Bit(s)
-static QWidget* cam_wids[16] = { 0 };
+static CameraWidget* cam_wids[16] = { 0 };
 
 XView_Zill::XView_Zill(QWidget *parent)
     : QWidget(parent)
@@ -50,6 +52,8 @@ XView_Zill::XView_Zill(QWidget *parent)
     View9();
     CameraConfig::Instance()->Load(CAM_CONF_PATH);
     RefreshCams();
+
+    startTimer(1);
 }
 static bool mouse_press = false;
 static QPoint mouse_point;
@@ -105,7 +109,7 @@ void XView_Zill::View(int count) {
     {
         if (!cam_wids[i])
         {
-            cam_wids[i] = new QWidget();
+            cam_wids[i] = new CameraWidget();
             cam_wids[i]->setStyleSheet("background-color:rgb(51,51,51);");
         }
         lay->addWidget(cam_wids[i], i / cols, i % cols);
@@ -166,8 +170,6 @@ void XView_Zill::SetCam(int index) {
         url_edit.setText(C(cam.url));
         sub_url_edit.setText(C(cam.url_sub));
         save_path_edit.setText(C(cam.save_path));
-
-
     }
     for (;;)
     {
@@ -213,6 +215,17 @@ void XView_Zill::SetCam(int index) {
     c->Save(CAM_CONF_PATH);//保存到文件
     RefreshCams();//刷新显示
 }
+//定时器渲染视频
+void XView_Zill::timerEvent(QTimerEvent* ev) {
+    int wid_size = sizeof(cam_wids) / sizeof(QWidget*);
+    for (int i = 0; i < wid_size; i++)
+    {
+        if (cam_wids[i])
+        {
+            cam_wids[i]->Draw();
+        }
+    }
+}
 XView_Zill::~XView_Zill()
 {
 }
@@ -253,8 +266,6 @@ void XView_Zill::SetCam() {
         QMessageBox::information(this, "error", C("请选择摄像机"));
         return;
     }
-    qDebug() << "dd";
-
     SetCam(row);
 }
 void XView_Zill::DelCam()
