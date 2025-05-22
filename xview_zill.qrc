@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="XView_Zill">
+    <file>img/camera_list.png</file>
+    <file>img/close.png</file>
+    <file>img/close.png</file>
+    <file>img/favicon.ico</file>
+    <file>img/camera.png</file>
+    <file>img/min.png</file>
+    <file>img/nax.png</file>
+    <file>img/normal.png</file>
+    <file>img/close.png</file>
+    <file>img/Z .png</file>
+  </qresource>
+</RCC>
