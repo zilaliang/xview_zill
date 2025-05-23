@@ -105,6 +105,7 @@
     <QtRcc Include="xview_zill.qrc" />
     <QtUic Include="xview_zill.ui" />
     <QtMoc Include="xview_zill.h" />
+    <ClCompile Include="camerarecord.cpp" />
     <ClCompile Include="camerawidget.cpp" />
     <ClCompile Include="camera_config.cpp" />
     <ClCompile Include="xview_zill.cpp" />
@@ -112,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="camerawidget.h" />
+    <ClInclude Include="camerarecord.h" />
     <ClInclude Include="camera_config.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

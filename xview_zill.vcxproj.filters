@@ -46,12 +46,18 @@
     <ClCompile Include="camerawidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="camerarecord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="camera_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="camerarecord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
